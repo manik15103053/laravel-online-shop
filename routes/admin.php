@@ -1,0 +1,38 @@
+<?php
+
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\SubCategoryController;
+use App\Http\Controllers\TempImageController;
+use Illuminate\Support\Facades\Route;
+
+
+
+
+
+Route::prefix('admin')->name('admin.')->group(function(){
+    Route::middleware(['auth:admin'])->group(function(){
+
+        //Category
+        Route::prefix('categories')->name('category.')->group(function(){
+            Route::get('/',[CategoryController::class,'index'])->name('index');
+            Route::get('/create',[CategoryController::class,'create'])->name('create');
+            Route::post('/store',[CategoryController::class,'store'])->name('store');
+            Route::get('/edit/{id}',[CategoryController::class,'edit'])->name('edit');
+            Route::post('/update/{id}',[CategoryController::class,'update'])->name('update');
+            Route::get('/delete/{id}',[CategoryController::class,'delete'])->name('delete');
+            Route::post('/temp-image-create',[TempImageController::class,'tempImgCreate'])->name('tempImage_create');
+            Route::get('/get-slug',[CategoryController::class,'getSlug'])->name('get-slug');
+        });
+
+        //Sub Category
+        Route::prefix('sub-categories')->name('sub-category.')->group(function(){
+            Route::get('/',[SubCategoryController::class,'index'])->name('index');
+            Route::get('/create',[SubCategoryController::class,'create'])->name('create');
+            Route::post('/store',[SubCategoryController::class,'store'])->name('store');
+            Route::get('/edit/{id}',[SubCategoryController::class,'edit'])->name('edit');
+            Route::post('/update/{id}',[SubCategoryController::class,'update'])->name('update');
+            Route::get('/delete/{id}',[SubCategoryController::class,'delete'])->name('delete');
+            Route::get('/get-sub-category-slug',[SubCategoryController::class,'getSubCatSlug'])->name('getSubCategorySlug');
+        });
+    });
+});
