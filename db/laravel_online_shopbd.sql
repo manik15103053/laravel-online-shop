@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 31, 2023 at 06:22 PM
+-- Generation Time: Dec 16, 2023 at 06:12 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -20,6 +20,28 @@ SET time_zone = "+00:00";
 --
 -- Database: `laravel_online_shopbd`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `brands`
+--
+
+CREATE TABLE `brands` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  `status` tinyint(4) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `brands`
+--
+
+INSERT INTO `brands` (`id`, `name`, `slug`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Brand name', 'brand-name', 1, '2023-11-02 21:41:39', '2023-11-02 21:41:39');
 
 -- --------------------------------------------------------
 
@@ -89,7 +111,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (4, '2019_12_14_000001_create_personal_access_tokens_table', 1),
 (5, '2023_10_16_181225_create_categories_table', 2),
 (6, '2023_10_24_045331_create_temp_images_table', 3),
-(7, '2023_10_27_043142_create_sub_categories_table', 4);
+(7, '2023_10_27_043142_create_sub_categories_table', 4),
+(8, '2023_11_01_170302_create_brands_table', 5),
+(9, '2023_11_14_163649_create_products_table', 6),
+(10, '2023_11_14_164948_create_product_images_table', 6);
 
 -- --------------------------------------------------------
 
@@ -117,6 +142,55 @@ CREATE TABLE `personal_access_tokens` (
   `token` varchar(64) NOT NULL,
   `abilities` text DEFAULT NULL,
   `last_used_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products`
+--
+
+CREATE TABLE `products` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  `price` double(10,2) NOT NULL,
+  `compare_price` double(10,2) DEFAULT NULL,
+  `category_id` int(11) NOT NULL,
+  `sub_category_id` int(11) DEFAULT NULL,
+  `brand_id` int(11) DEFAULT NULL,
+  `is_featured` enum('Yes','No') NOT NULL DEFAULT 'No',
+  `sku` varchar(255) NOT NULL,
+  `barcode` varchar(255) DEFAULT NULL,
+  `track_qty` enum('Yes','No') NOT NULL DEFAULT 'Yes',
+  `qty` int(11) DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT 1,
+  `description` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `title`, `slug`, `price`, `compare_price`, `category_id`, `sub_category_id`, `brand_id`, `is_featured`, `sku`, `barcode`, `track_qty`, `qty`, `status`, `description`, `created_at`, `updated_at`) VALUES
+(1, 'Test Product', 'test-product', 50.00, 40.00, 33, 2, 1, 'Yes', '50', '123', 'Yes', 50, 1, '<p>This is the best test</p>', '2023-12-01 20:17:58', '2023-12-01 20:17:58'),
+(2, 'This is the another product', 'this-is-the-another-product', 50.00, 40.00, 33, 2, 1, 'Yes', '505', '123', 'Yes', 50, 1, '<p>This is the another product</p>', '2023-12-01 20:20:41', '2023-12-01 20:20:41');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_images`
+--
+
+CREATE TABLE `product_images` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `sort_order` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -203,7 +277,8 @@ INSERT INTO `temp_images` (`id`, `name`, `created_at`, `updated_at`) VALUES
 (38, '1698382702.png', '2023-10-26 22:58:22', '2023-10-26 22:58:22'),
 (39, '1698382730.png', '2023-10-26 22:58:51', '2023-10-26 22:58:51'),
 (40, '1698382786.png', '2023-10-26 22:59:46', '2023-10-26 22:59:46'),
-(41, '1698383021.png', '2023-10-26 23:03:41', '2023-10-26 23:03:41');
+(41, '1698383021.png', '2023-10-26 23:03:41', '2023-10-26 23:03:41'),
+(42, '1699984201.png', '2023-11-14 11:50:01', '2023-11-14 11:50:01');
 
 -- --------------------------------------------------------
 
@@ -236,6 +311,12 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `ro
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `brands`
+--
+ALTER TABLE `brands`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `categories`
@@ -271,6 +352,18 @@ ALTER TABLE `personal_access_tokens`
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
 
 --
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `product_images`
+--
+ALTER TABLE `product_images`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `sub_categories`
 --
 ALTER TABLE `sub_categories`
@@ -294,6 +387,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `brands`
+--
+ALTER TABLE `brands`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
@@ -309,12 +408,24 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `product_images`
+--
+ALTER TABLE `product_images`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
@@ -327,7 +438,7 @@ ALTER TABLE `sub_categories`
 -- AUTO_INCREMENT for table `temp_images`
 --
 ALTER TABLE `temp_images`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `users`
