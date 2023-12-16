@@ -65,6 +65,7 @@ Product Create
                             </div>
                         </div>	                                                                      
                     </div>
+                    <div class="row" id="product-gallery"></div>
                     <div class="card mb-3">
                         <div class="card-body">
                             <h2 class="h4 mb-3">Pricing</h2>								
@@ -271,26 +272,44 @@ $("#category").change(function(){
     });
     //End Product 
     //Drop zoon
-    Dropzone.autoDiscover = false;    
+    Dropzone.autoDiscover = false;
     $(function () {
         // Summernote
         $('.summernote').summernote({
             height: '300px'
         });
        
-        const dropzone = $("#image").dropzone({ 
-            url:  "create-product.html",
-            maxFiles: 5,
-            addRemoveLinks: true,
-            acceptedFiles: "image/jpeg,image/png,image/gif",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-            }, success: function(file, response){
-                $("#image_id").val(response.id);
-            }
-        });
+       //Dropzone
+// Disable Dropzone autoDiscover (if you're manually initializing it).
 
-    });
+const dropzone = $("#image").dropzone({
+    
+    url: "{{ route('admin.category.tempImage_create') }}",
+    maxFiles: 10,
+    paramName: 'image',
+    addRemoveLinks: true,
+    acceptedFile: "image/jpeg,image/png,image/gif",
+    headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+     success: function(file, response){
+        // $("#image_id").val(response.image_id);
+
+            var html = `<div class='col-md-3'>
+                                <input type='hidden' name='image_array[]' value='${response.image_id}'/>
+                                <div class="card">
+                                <img src="${response.imagePath}" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <a href="#" class="btn btn-danger">Delete</a>
+                                </div>
+                            </div>
+                        </div>`;
+             
+            $("#product-gallery").append(html);        
+     }       
+});
+
+});
 </script>
 <script>
     

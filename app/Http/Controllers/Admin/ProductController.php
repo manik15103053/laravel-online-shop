@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Product;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Brand;
+use App\Models\Product;
 use App\Models\Category;
 use App\Models\SubCategory;
+use Illuminate\Support\Str;
+use App\Models\ProductImage;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Intervention\Image\Facades\Image;
+use SebastianBergmann\Template\Template;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
@@ -63,6 +66,44 @@ class ProductController extends Controller
             $product->brand_id = $request->brand;
             $product->is_featured = $request->is_featured;
             $product->save();
+
+            //Save Gallery Image
+            if(!empty($request->image_array)){
+                foreach($request->image_array as $key=> $temp_image_id){
+                    $temImageInfo = Template::find($temp_image_id);
+                    $extArray = explode('.', $temImageInfo->name);
+                    $ext = last($extArray);
+                    $productImage = new ProductImage();
+                    $productImage->product_id = $product->id;
+                    $productImage->image = 'NULL';
+                    $productImage->save();
+
+                    $imageName = $product->id.'-'.$productImage->id.'-'.time().'.'.$ext;
+                    $productImage->image = $imageName;
+                    $productImage->save();
+
+                    //Genarate Product Image Thumbnil
+
+                    //large image
+                    $sourcePath = public_path().'/temp/'.$temImageInfo->name;
+                    $destPath = public_path().'/uploads/product/large'.$temImageInfo->name;
+                    $image = Image::make($sourcePath);
+                    $image->resize(1400, null, function($constraint){
+                        $constraint->aspectRatio();
+                    });
+
+                    $image->save($destPath);
+
+
+                    //Small Image
+                    $destPath = public_path().'/uploads/product/small'.$temImageInfo->name;
+                    $image = Image::make($sourcePath);
+                    $image->fit(300 , 300);
+
+                    $image->save($destPath);
+
+                }
+            }
             $request->session()->flash('success', 'Product Created Successfully');
             return response()->json([
                 'status' => true,
