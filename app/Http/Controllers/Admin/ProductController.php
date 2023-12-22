@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\TempImage;
 use Intervention\Image\Facades\Image;
 use SebastianBergmann\Template\Template;
 use Illuminate\Support\Facades\Validator;
@@ -33,10 +34,13 @@ class ProductController extends Controller
     }
 
     public function store(Request $request){
+
+        // dd($request->image_array);
+        exit();
         $rules = [
             'title' => 'required',
             'slug' => 'required|unique:products',
-            'sku' => 'required|unique:products',
+            'sku' => 'nullable',
             'price' => 'required',
             'track_qty' => 'required|in:Yes,No',
             'category' => 'required|numeric',
@@ -45,7 +49,7 @@ class ProductController extends Controller
 
         if(!empty($request->track_qty) && $request->track_qty == 'Yes'){
             $rules['qty'] = 'required|numeric';
-        } 
+        }
 
        $validator =  Validator::make($request->all(), $rules);
         if($validator->passes()){
@@ -67,11 +71,13 @@ class ProductController extends Controller
             $product->is_featured = $request->is_featured;
             $product->save();
 
+            dd($request->image_array);
             //Save Gallery Image
             if(!empty($request->image_array)){
-                foreach($request->image_array as $key=> $temp_image_id){
-                    $temImageInfo = Template::find($temp_image_id);
-                    $extArray = explode('.', $temImageInfo->name);
+                foreach($request->image_array as $key => $tem_img_id){
+
+                    $tempImageInfo  = TempImage::find($tem_img_id);
+                    $extArray = explode('.',$tempImageInfo->name);
                     $ext = last($extArray);
                     $productImage = new ProductImage();
                     $productImage->product_id = $product->id;
@@ -82,11 +88,8 @@ class ProductController extends Controller
                     $productImage->image = $imageName;
                     $productImage->save();
 
-                    //Genarate Product Image Thumbnil
-
-                    //large image
-                    $sourcePath = public_path().'/temp/'.$temImageInfo->name;
-                    $destPath = public_path().'/uploads/product/large'.$temImageInfo->name;
+                    $sourcePath = public_path().'/temp/'.$tempImageInfo->name;
+                    $destPath = public_path().'/uploads/product/large/'.$tempImageInfo->name;
                     $image = Image::make($sourcePath);
                     $image->resize(1400, null, function($constraint){
                         $constraint->aspectRatio();
@@ -94,14 +97,12 @@ class ProductController extends Controller
 
                     $image->save($destPath);
 
-
                     //Small Image
-                    $destPath = public_path().'/uploads/product/small'.$temImageInfo->name;
+                    $destPath = public_path().'/uploads/product/small/'.$tempImageInfo->name;
                     $image = Image::make($sourcePath);
-                    $image->fit(300 , 300);
+                    $image->fit(300, 300);
 
                     $image->save($destPath);
-
                 }
             }
             $request->session()->flash('success', 'Product Created Successfully');
@@ -119,15 +120,15 @@ class ProductController extends Controller
     }
 
     public function edit($id){
-        
+
     }
 
     public function update(Request $request, $id){
-        
+
     }
 
     public function delete($id){
-        
+
     }
 
     public function getProductSlug(Request $request){

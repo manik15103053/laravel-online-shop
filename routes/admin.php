@@ -23,9 +23,10 @@ Route::prefix('admin')->name('admin.')->group(function(){
             Route::get('/edit/{id}',[CategoryController::class,'edit'])->name('edit');
             Route::post('/update/{id}',[CategoryController::class,'update'])->name('update');
             Route::get('/delete/{id}',[CategoryController::class,'delete'])->name('delete');
-            Route::post('/temp-image-create',[TempImageController::class,'tempImgCreate'])->name('tempImage_create');
             Route::get('/get-slug',[CategoryController::class,'getSlug'])->name('get-slug');
         });
+
+        Route::post('/temp-image-create',[TempImageController::class,'tempImgCreate'])->name('tempImage_create');
 
         //Sub Category
         Route::prefix('sub-categories')->name('sub-category.')->group(function(){

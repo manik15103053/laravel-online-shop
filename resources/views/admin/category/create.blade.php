@@ -6,17 +6,17 @@ Category Create
 @endsection
 @push('css')
     <style>
-       
+
     </style>
 @endpush
 @section('main-content')
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">					
+    <section class="content-header">
         <div class="container-fluid my-2">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Create Category</h1>
+                    <h1>Updated Create</h1>
                 </div>
                 <div class="col-sm-6 text-right">
                     <a href="{{ route('admin.category.index') }}" class="btn btn-primary">Back</a>
@@ -31,20 +31,20 @@ Category Create
         <div class="container-fluid">
             <form action="" method="post" id="categoryForm" name="categoryForm">
                 <div class="card">
-                    <div class="card-body">								
+                    <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="name">Name</label>
-                                    <input type="text" name="name" id="name" class="form-control" placeholder="Name">
-                                    <p></p>	
+                                    <input type="text" name="name" id="name" value="" class="form-control" placeholder="Name">
+                                    <p></p>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="email">Slug</label>
-                                    <input type="text" readonly name="slug" id="slug" class="form-control" placeholder="Slug">
-                                    <p></p>	
+                                    <input type="text" readonly name="slug" value="" id="slug" class="form-control" placeholder="Slug">
+                                    <p></p>
                                 </div>
                             </div>
                             <input type="hidden" id="image_id" name="image_id" value="">
@@ -66,22 +66,25 @@ Category Create
                                         <option value="0">Inactive</option>
                                     </select>
                                 </div>
-                            </div>	
+                            </div>
+                            <div class="col-md-4">
+                                {{-- <img src="{{ asset('uploads/category/'.$category->image) }}" width="150px" alt=""> --}}
+                            </div>
                             {{-- <div class="col-md-12">
                                 <div class="mb-3">
                                     <label for="">Image</label>
                                     <div id="image" class="dropzone dz-clickable">
-                                        <div class="dz-message needsclick">    
-                                            <br>Drop files here or click to upload.<br><br>                                            
+                                        <div class="dz-message needsclick">
+                                            <br>Drop files here or click to upload.<br><br>
                                         </div>
-                                    </div>    
-                                </div>    
+                                    </div>
+                                </div>
                             </div>									 --}}
                         </div>
-                    </div>							
+                    </div>
                 </div>
                 <div class="pb-5 pt-3">
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                     <button type="reset" class="btn btn-danger">Cancel</button>
                 </div>
             </form>
@@ -95,7 +98,7 @@ Category Create
 {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
     Launch demo modal
   </button> --}}
-  
+
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -108,10 +111,10 @@ Category Create
         </div>
         <div class="modal-body">
             <div id="image" class="dropzone dz-clickable">
-                <div class="dz-message needsclick">    
-                    <br>Drop files here or click to upload.<br><br>                                            
+                <div class="dz-message needsclick">
+                    <br>Drop files here or click to upload.<br><br>
                 </div>
-            </div> 
+            </div>
         </div>
         <div class="modal-footer">
           {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
@@ -175,8 +178,8 @@ Category Create
                         .html("");
                     }
                 }
-                
-                
+
+
             },error: function(e, exception){
                 console.log('Something went to wrong')
             }
@@ -188,7 +191,7 @@ Category Create
     $("button[type=submit]").prop('disabled', true)
     $.ajax({
         url: "{{ route('admin.category.get-slug') }}",
-        type: 'get',
+        method: 'get',
         data: { title: element.val() },
         dataType: 'json',
         success: function(response) {
@@ -222,7 +225,7 @@ const dropzone = $("#image").dropzone({
             },
      success: function(file, response){
         $("#image_id").val(response.image_id);
-     }       
+     }
 });
 </script>
 @endpush

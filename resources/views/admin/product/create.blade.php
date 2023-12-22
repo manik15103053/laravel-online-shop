@@ -5,13 +5,13 @@
 Product Create
 @endsection
 @push('css')
-<link rel="stylesheet" href="{{ asset('backend/plugins/summernote/summernote-bs4.min.css') }}">
+<link rel="stylesheet" href="{{ asset ('backend/plugins/summernote/summernote-bs4.min.css') }}">
 
 @endpush
 @section('main-content')
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">					
+    <section class="content-header">
         <div class="container-fluid my-2">
             <div class="row mb-2">
                 <div class="col-sm-6">
@@ -31,19 +31,19 @@ Product Create
             <div class="row">
                 <div class="col-md-8">
                     <div class="card mb-3">
-                        <div class="card-body">								
+                        <div class="card-body">
                             <div class="row">
                                 <form action="" method="post" id="productForm" name="productForm">
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label for="title">Title</label>
                                         <input type="text" name="title" id="title" class="form-control" placeholder="Title">
-                                        <p class="error"></p>	
+                                        <p class="error"></p>
                                     </div>
                                     <div class="mb-3">
                                         <label for="slug">Slug</label>
                                         <input type="text" name="slug" id="slug" readonly class="form-control" placeholder="Slug">
-                                        <p class="error"></p>	
+                                        <p class="error"></p>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -51,30 +51,30 @@ Product Create
                                         <label for="description">Description</label>
                                         <textarea name="description" id="description" cols="30" rows="10" class="summernote" placeholder="Description"></textarea>
                                     </div>
-                                </div>                                            
+                                </div>
                             </div>
-                        </div>	                                                                      
+                        </div>
                     </div>
                     <div class="card mb-3">
                         <div class="card-body">
-                            <h2 class="h4 mb-3">Media</h2>								
+                            <h2 class="h4 mb-3">Media</h2>
                             <div id="image" class="dropzone dz-clickable">
-                                <div class="dz-message needsclick">    
-                                    <br>Drop files here or click to upload.<br><br>                                            
+                                <div class="dz-message needsclick">
+                                    <br>Drop files here or click to upload.<br><br>
                                 </div>
                             </div>
-                        </div>	                                                                      
+                        </div>
                     </div>
                     <div class="row" id="product-gallery"></div>
                     <div class="card mb-3">
                         <div class="card-body">
-                            <h2 class="h4 mb-3">Pricing</h2>								
+                            <h2 class="h4 mb-3">Pricing</h2>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label for="price">Price</label>
                                         <input type="text" name="price" id="price" class="form-control" placeholder="Price">
-                                        <p class="error"></p>	
+                                        <p class="error"></p>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -83,28 +83,28 @@ Product Create
                                         <input type="text" name="compare_price" id="compare_price" class="form-control" placeholder="Compare Price">
                                         <p class="text-muted mt-3">
                                             To show a reduced price, move the product’s original price into Compare at price. Enter a lower value into Price.
-                                        </p>	
+                                        </p>
                                     </div>
-                                </div>                                            
+                                </div>
                             </div>
-                        </div>	                                                                      
+                        </div>
                     </div>
                     <div class="card mb-3">
                         <div class="card-body">
-                            <h2 class="h4 mb-3">Inventory</h2>								
+                            <h2 class="h4 mb-3">Inventory</h2>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="sku">SKU (Stock Keeping Unit)</label>
-                                        <input type="text" name="sku" id="sku" class="form-control" placeholder="sku">	
+                                        <input type="text" name="sku" id="sku" class="form-control" placeholder="sku">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="barcode">Barcode</label>
-                                        <input type="text" name="barcode" id="barcode" class="form-control" placeholder="Barcode">	
+                                        <input type="text" name="barcode" id="barcode" class="form-control" placeholder="Barcode">
                                     </div>
-                                </div>   
+                                </div>
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <input type="hidden" name="track_qty" value="No">
@@ -116,16 +116,16 @@ Product Create
                                     </div>
                                     <div class="mb-3">
                                         <input type="number" min="0" name="qty" id="qty" class="form-control" placeholder="Qty">
-                                        <p class="error"></p>	
+                                        <p class="error"></p>
                                     </div>
-                                </div>                                         
+                                </div>
                             </div>
-                        </div>	                                                                      
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card mb-3">
-                        <div class="card-body">	
+                        <div class="card-body">
                             <h2 class="h4 mb-3">Product status</h2>
                             <div class="mb-3">
                                 <select name="status" id="status" class="form-control">
@@ -134,9 +134,9 @@ Product Create
                                 </select>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                     <div class="card">
-                        <div class="card-body">	
+                        <div class="card-body">
                             <h2 class="h4  mb-3">Product category</h2>
                             <div class="mb-3">
                                 <label for="category">Category</label>
@@ -154,13 +154,13 @@ Product Create
                                 <label for="category">Sub category</label>
                                 <select name="sub_category" id="sub_category" class="form-control">
                                     <option value="">Select a Sub Category</option>
-                                    
+
                                 </select>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                     <div class="card mb-3">
-                        <div class="card-body">	
+                        <div class="card-body">
                             <h2 class="h4 mb-3">Product brand</h2>
                             <div class="mb-3">
                                 <select name="brand" id="brand" class="form-control">
@@ -173,26 +173,26 @@ Product Create
                                 </select>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                     <div class="card mb-3">
-                        <div class="card-body">	
+                        <div class="card-body">
                             <h2 class="h4 mb-3">Featured product</h2>
                             <div class="mb-3">
                                 <select name="is_featured" id="is_featured" class="form-control">
                                     <option value="No">No</option>
-                                    <option value="Yes">Yes</option>                                                
+                                    <option value="Yes">Yes</option>
                                 </select>
                             </div>
                         </div>
-                    </div>                                 
+                    </div>
                 </div>
             </div>
-            
+
             <div class="pb-5 pt-3">
                 <button type="submit" class="btn btn-primary">Create</button>
                 <a href="products.html" class="btn btn-outline-dark ml-3">Cancel</a>
             </div>
-        </form> 
+        </form>
         </div>
         <!-- /.card -->
     </section>
@@ -242,7 +242,7 @@ $("#category").change(function(){
     //Product Validation
     $("#productForm").submit(function(e){
         e.preventDefault();
-        
+
         var formArray = $(this).serializeArray();
         $("button[type=submit]").prop('disabled', true);
         $.ajax({
@@ -262,7 +262,7 @@ $("#category").change(function(){
                     $.each(errors, function(key, value){
                         $(`#${key}`).addClass('is-invalid').siblings('p').addClass('invalid-feedback').html(value);
                     })
-                   
+
                 }
             },
             error:function(){
@@ -270,7 +270,7 @@ $("#category").change(function(){
             }
         });
     });
-    //End Product 
+    //End Product
     //Drop zoon
     Dropzone.autoDiscover = false;
     $(function () {
@@ -278,40 +278,41 @@ $("#category").change(function(){
         $('.summernote').summernote({
             height: '300px'
         });
-       
+
        //Dropzone
 // Disable Dropzone autoDiscover (if you're manually initializing it).
 
-const dropzone = $("#image").dropzone({
-    
-    url: "{{ route('admin.category.tempImage_create') }}",
+const dropzone = new Dropzone("#image", {
+    url: "{{ route('admin.tempImage_create') }}",
     maxFiles: 10,
     paramName: 'image',
     addRemoveLinks: true,
-    acceptedFile: "image/jpeg,image/png,image/gif",
+    acceptedFiles: "image/jpeg,image/png,image/gif", // acceptedFiles, not acceptedFile
     headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-     success: function(file, response){
-        // $("#image_id").val(response.image_id);
-
-            var html = `<div class='col-md-3'>
-                                <input type='hidden' name='image_array[]' value='${response.image_id}'/>
-                                <div class="card">
-                                <img src="${response.imagePath}" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <a href="#" class="btn btn-danger">Delete</a>
-                                </div>
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function(file, response) {
+        console.log("Image iD: ",response.image_id);
+        var html = `<div class='col-md-3'>
+                        <div class="card">
+                            <input type="hidden" name="image_array[]" value="${response.image_id}"/>
+                            <img src="${response.imagePath}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <a href="#" class="btn btn-danger btn-sm text-center">Delete</a>
                             </div>
-                        </div>`;
-             
-            $("#product-gallery").append(html);        
-     }       
+                        </div>
+                    </div>`;
+        $("#product-gallery").append(html);
+
+        // Trigger a change event to notify the form of the added field
+        // $("#image").trigger("change");
+    }
 });
+
 
 });
 </script>
 <script>
-    
+
 </script>
 @endpush
