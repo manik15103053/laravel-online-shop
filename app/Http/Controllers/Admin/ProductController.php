@@ -35,6 +35,7 @@ class ProductController extends Controller
 
     public function store(Request $request){
 
+        // dd($request->all());
         // dd($request->image_array);
         exit();
         $rules = [
@@ -71,7 +72,7 @@ class ProductController extends Controller
             $product->is_featured = $request->is_featured;
             $product->save();
 
-            dd($request->image_array);
+            // dd($request->image_array);
             //Save Gallery Image
             if(!empty($request->image_array)){
                 foreach($request->image_array as $key => $tem_img_id){

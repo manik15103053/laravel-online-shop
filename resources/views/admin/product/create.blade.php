@@ -187,7 +187,7 @@ Product Create
                     </div>
                 </div>
             </div>
-
+            <input type="hidden" name="image_array[]" id="image_array">
             <div class="pb-5 pt-3">
                 <button type="submit" class="btn btn-primary">Create</button>
                 <a href="products.html" class="btn btn-outline-dark ml-3">Cancel</a>
@@ -204,6 +204,7 @@ Product Create
 <script src="{{ asset('backend/plugins/summernote/summernote-bs4.min.js') }}"></script>
 
 <script>
+    var image_new_array = [] ;
  $("#title").on('input',function(){
     var element = $(this);
     $("button[type=submit]").prop('disabled', true);
@@ -292,10 +293,13 @@ const dropzone = new Dropzone("#image", {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     },
     success: function(file, response) {
-        console.log("Image iD: ",response.image_id);
+
+        image_new_array.push(response.image_id); 
+        $("#image_array").val(image_new_array)
+        // console.log("Image iD: ",response.image_id);
         var html = `<div class='col-md-3'>
                         <div class="card">
-                            <input type="hidden" name="image_array[]" value="${response.image_id}"/>
+                            
                             <img src="${response.imagePath}" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <a href="#" class="btn btn-danger btn-sm text-center">Delete</a>
