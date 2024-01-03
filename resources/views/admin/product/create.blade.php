@@ -294,12 +294,11 @@ const dropzone = new Dropzone("#image", {
     },
     success: function(file, response) {
 
-        image_new_array.push(response.image_id); 
+        image_new_array.push(response.image_id);
         $("#image_array").val(image_new_array)
-        // console.log("Image iD: ",response.image_id);
         var html = `<div class='col-md-3'>
                         <div class="card">
-                            
+
                             <img src="${response.imagePath}" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <a href="#" class="btn btn-danger btn-sm text-center">Delete</a>
@@ -308,8 +307,7 @@ const dropzone = new Dropzone("#image", {
                     </div>`;
         $("#product-gallery").append(html);
 
-        // Trigger a change event to notify the form of the added field
-        // $("#image").trigger("change");
+
     }
 });
 
