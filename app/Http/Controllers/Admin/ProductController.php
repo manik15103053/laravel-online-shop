@@ -19,7 +19,8 @@ class ProductController extends Controller
 {
     public function index(){
 
-        $products = Product::orderBy('id', 'desc')->paginate(10);
+        $products = Product::with('product_image')->orderBy('id', 'desc')->paginate(10);
+        // dd($products);
         return view('admin.product.index', compact('products'));
     }
 
@@ -35,8 +36,9 @@ class ProductController extends Controller
 
     public function store(Request $request){
 
-
+        // dd($request->all());
         // dd($request->image_array);
+        // exit();
         $rules = [
             'title' => 'required',
             'slug' => 'required|unique:products',
@@ -72,38 +74,41 @@ class ProductController extends Controller
             $product->save();
 
             //Save Gallery Image
-            if(!empty($request->image_array)){
-                foreach($request->image_array as $key => $tem_img_id){
+            if (!empty($request->image_new_array)) {
+                foreach ($request->image_new_array as $tem_img_id) {
 
                     $tempImageInfo  = TempImage::find($tem_img_id);
-                    $extArray = explode('.',$tempImageInfo->name);
+                    $extArray = explode('.', $tempImageInfo->name);
                     $ext = last($extArray);
                     $productImage = new ProductImage();
                     $productImage->product_id = $product->id;
                     $productImage->image = 'NULL';
                     $productImage->save();
 
-                    $imageName = $product->id.'-'.$productImage->id.'-'.time().'.'.$ext;
+                    $imageName = $product->id . '-' . $productImage->id . '-' . time() . '-' . $tem_img_id . '.' . $ext;
                     $productImage->image = $imageName;
                     $productImage->save();
 
-                    $sourcePath = public_path().'/temp/'.$tempImageInfo->name;
-                    $destPath = public_path().'/uploads/product/large/'.$tempImageInfo->name;
+                    $sourcePath = public_path() . '/temp/' . $tempImageInfo->name;
+                    $destPathLarge = public_path() . '/uploads/product/large/' . $imageName;
+                    $destPathSmall = public_path() . '/uploads/product/small/' . $imageName;
+
                     $image = Image::make($sourcePath);
-                    $image->resize(1400, null, function($constraint){
+
+                    // Large Image (resize to 1400 width)
+                    $imageLarge = clone $image;
+                    $imageLarge->resize(1400, null, function ($constraint) {
                         $constraint->aspectRatio();
                     });
+                    $imageLarge->save($destPathLarge);
 
-                    $image->save($destPath);
-
-                    //Small Image
-                    $destPath = public_path().'/uploads/product/small/'.$tempImageInfo->name;
-                    $image = Image::make($sourcePath);
-                    $image->fit(300, 300);
-
-                    $image->save($destPath);
+                    // Small Image (fit into 300x300)
+                    $imageSmall = clone $image;
+                    $imageSmall->fit(300, 300);
+                    $imageSmall->save($destPathSmall);
                 }
             }
+
             $request->session()->flash('success', 'Product Created Successfully');
             return response()->json([
                 'status' => true,
