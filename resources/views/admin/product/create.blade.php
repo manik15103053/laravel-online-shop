@@ -187,7 +187,7 @@ Product Create
                     </div>
                 </div>
             </div>
-            <input type="hidden" name="image_array[]" id="image_array">
+            <input type="hidden" name="image_new_array[]" id="image_array">
             <div class="pb-5 pt-3">
                 <button type="submit" class="btn btn-primary">Create</button>
                 <a href="products.html" class="btn btn-outline-dark ml-3">Cancel</a>
@@ -294,27 +294,34 @@ const dropzone = new Dropzone("#image", {
     },
     success: function(file, response) {
 
-        image_new_array.push(response.image_id); 
+        image_new_array.push(response.image_id);
         $("#image_array").val(image_new_array)
-        // console.log("Image iD: ",response.image_id);
-        var html = `<div class='col-md-3'>
+        var html = `<div class='col-md-3' id="image-row-${response.image_id}">
                         <div class="card">
-                            
+
                             <img src="${response.imagePath}" class="card-img-top" alt="...">
                             <div class="card-body">
-                                <a href="#" class="btn btn-danger btn-sm text-center">Delete</a>
+                                <a href="javascript:void(0)" onclick="deleteImage(${response.image_id})" class="btn btn-danger btn-sm text-center">Delete</a>
                             </div>
                         </div>
                     </div>`;
         $("#product-gallery").append(html);
 
-        // Trigger a change event to notify the form of the added field
-        // $("#image").trigger("change");
+
+    },
+    complete:function(file){
+        this.removeFile(file);
     }
 });
 
 
+
 });
+///Delete Image
+function deleteImage(id){
+    $("#image-row-"+ id).remove();
+}
+
 </script>
 <script>
 
