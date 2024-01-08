@@ -36,21 +36,23 @@ class ProductController extends Controller
 
     public function store(Request $request){
 
+
         // dd($request->all());
-        // dd($request->image_array);
+        $new_image_arrays = explode(',', $request->image_new_array);
+        // dd($new_image_array);
         // exit();
         $rules = [
-            'title' => 'required',
-            'slug' => 'required|unique:products',
-            'sku' => 'nullable',
-            'price' => 'required',
-            'track_qty' => 'required|in:Yes,No',
-            'category' => 'required|numeric',
-            'is_featured' => 'required|in:Yes,No',
+            // 'title' => 'required',
+            // 'slug' => 'required|unique:products',
+            // 'sku' => 'nullable',
+            // 'price' => 'required',
+            // 'track_qty' => 'required|in:Yes,No',
+            // 'category' => 'required|numeric',
+            // 'is_featured' => 'required|in:Yes,No',
         ];
 
         if(!empty($request->track_qty) && $request->track_qty == 'Yes'){
-            $rules['qty'] = 'required|numeric';
+            // $rules['qty'] = 'required|numeric';
         }
 
        $validator =  Validator::make($request->all(), $rules);
@@ -74,18 +76,18 @@ class ProductController extends Controller
             $product->save();
 
             //Save Gallery Image
-            if (!empty($request->image_new_array)) {
-                foreach ($request->image_new_array as $tem_img_id) {
-
+            if (!empty($new_image_arrays)) {
+                foreach ($new_image_arrays as $tem_img_id) {
+          
                     $tempImageInfo  = TempImage::find($tem_img_id);
-                    $extArray = explode('.', $tempImageInfo->name);
-                    $ext = last($extArray);
+                    // $extArray = $tempImageInfo->name;
+                    // $ext = last($extArray);
                     $productImage = new ProductImage();
                     $productImage->product_id = $product->id;
                     $productImage->image = 'NULL';
                     $productImage->save();
 
-                    $imageName = $product->id . '-' . $productImage->id . '-' . time() . '-' . $tem_img_id . '.' . $ext;
+                    $imageName = $product->id . '-' . $productImage->id . '-' . time() . '-' . $tempImageInfo->name;
                     $productImage->image = $imageName;
                     $productImage->save();
 
