@@ -37,7 +37,7 @@ class ProductController extends Controller
 
         // dd($request->all());
         // dd($request->image_array);
-        exit();
+        // exit();
         $rules = [
             'title' => 'required',
             'slug' => 'required|unique:products',
