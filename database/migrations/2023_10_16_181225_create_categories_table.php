@@ -19,6 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->string('slug');
             $table->string('image')->nullable();
             $table->tinyInteger('status')->default(1);
+            $table->enum('show_home',['Yes', 'No'])->default('No');
             $table->timestamps();
         });
     }

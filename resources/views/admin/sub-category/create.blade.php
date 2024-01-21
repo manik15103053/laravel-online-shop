@@ -6,13 +6,13 @@ Sub Category Create
 @endsection
 @push('css')
     <style>
-       
+
     </style>
 @endpush
 @section('main-content')
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">					
+    <section class="content-header">
         <div class="container-fluid my-2">
             <div class="row mb-2">
                 <div class="col-sm-6">
@@ -31,7 +31,7 @@ Sub Category Create
         <div class="container-fluid">
             <form action="" method="post" id="subCategoryForm" name="subCategoryForm">
                 <div class="card">
-                    <div class="card-body">								
+                    <div class="card-body">
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="mb-3">
@@ -44,24 +44,24 @@ Sub Category Create
                                             @endforeach
                                         @endif
                                     </select>
-                                    <p></p>	
+                                    <p></p>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="name">Sub Category</label>
                                     <input type="text" name="name" id="name" class="form-control" placeholder="Sub Category Name">
-                                    <p></p>	
+                                    <p></p>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="email">Slug</label>
                                     <input type="text" readonly name="slug" id="slug" class="form-control" placeholder="Slug">
-                                    <p></p>	
+                                    <p></p>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="email">Status</label>
@@ -70,9 +70,18 @@ Sub Category Create
                                         <option value="0">Inactive</option>
                                     </select>
                                 </div>
-                            </div>	
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="email">Show On Home</label>
+                                    <select name="show_home" class="form-control" id="status">
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                    </div>							
+                    </div>
                 </div>
                 <div class="pb-5 pt-3">
                     <button type="submit" class="btn btn-primary">Create</button>
@@ -109,7 +118,7 @@ Sub Category Create
     });
 
     $("#subCategoryForm").submit(function(e){
-        
+
         e.preventDefault();
 
         var element = $("#subCategoryForm");
@@ -142,7 +151,7 @@ Sub Category Create
                     }else{
                         $("#name").removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html('')
                     }
-                    
+
                     if(errors['slug']){
                         $("#slug").addClass('is-invalid').siblings('p').addClass('invalid-feedback').html(errors['slug']);
                     }else{

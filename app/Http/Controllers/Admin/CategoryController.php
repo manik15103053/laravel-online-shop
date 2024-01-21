@@ -12,10 +12,10 @@ use File;
 use Image;
 class CategoryController extends Controller
 {
-    public function index(Request $request){    
-    
-     
-        
+    public function index(Request $request){
+
+
+
         $categories = Category::orderBy('id','desc')->paginate(10);
 
 
@@ -27,7 +27,7 @@ class CategoryController extends Controller
     }
 
     public function store(Request $request){
-        
+
         $validator = Validator::make($request->all(),[
             'name' => 'required',
             'slug' => 'required|unique:categories'
@@ -39,6 +39,7 @@ class CategoryController extends Controller
             $category->name = $request->name;
             $category->slug = $request->slug;
             $category->status = $request->status;
+            $category->show_home = $request->show_home;
             $category->save();
 
             //Save Image Here
@@ -56,10 +57,10 @@ class CategoryController extends Controller
 
 
                 //Genarate Image Thumb
-                // $dPath = public_path().'/uploads/category/thumb/'.$newImageName;
-                // $img = Image::make($sPath);
-                // $img->resize(450, 600);
-                // $img->save($dPath);
+                $dPath = public_path().'/uploads/category/thumb/'.$newImageName;
+                $img = Image::make($sPath);
+                $img->resize(450, 600);
+                $img->save($dPath);
 
 
                 $category->image = $newImageName;
@@ -124,6 +125,8 @@ class CategoryController extends Controller
             $category->name = $request->name;
             $category->slug = $request->slug;
             $category->status = $request->status;
+            $category->show_home = $request->show_home;
+
             $category->save();
 
             //Save Image Here
@@ -132,7 +135,7 @@ class CategoryController extends Controller
                 if($category->image){
 
                     $image_path = public_path().'/uploads/category/'.$category->image;
-    
+
                     if (File::exists($image_path)) {
                         File::delete($image_path);
                     }
@@ -151,10 +154,10 @@ class CategoryController extends Controller
 
 
                 //Genarate Image Thumb
-                // $dPath = public_path().'/uploads/category/thumb/'.$newImageName;
-                // $img = Image::make($sPath);
-                // $img->resize(450, 600);
-                // $img->save($dPath);
+                $dPath = public_path().'/uploads/category/thumb/'.$newImageName;
+                $img = Image::make($sPath);
+                $img->resize(450, 600);
+                $img->save($dPath);
 
 
                 $category->image = $newImageName;

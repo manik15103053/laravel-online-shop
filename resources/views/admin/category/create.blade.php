@@ -67,6 +67,15 @@ Category Create
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="email">Show On Home</label>
+                                    <select name="show_home" class="form-control" id="status">
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-4">
                                 {{-- <img src="{{ asset('uploads/category/'.$category->image) }}" width="150px" alt=""> --}}
                             </div>
@@ -215,7 +224,7 @@ const dropzone = $("#image").dropzone({
             }
         });
     },
-    url: "{{ route('admin.category.tempImage_create') }}",
+    url: "{{ route('admin.tempImage_create') }}",
     maxFiles: 1,
     paramName: 'image',
     addRemoveLinks: true,

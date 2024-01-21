@@ -6,13 +6,13 @@ Sub Category Edit
 @endsection
 @push('css')
     <style>
-       
+
     </style>
 @endpush
 @section('main-content')
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">					
+    <section class="content-header">
         <div class="container-fluid my-2">
             <div class="row mb-2">
                 <div class="col-sm-6">
@@ -31,7 +31,7 @@ Sub Category Edit
         <div class="container-fluid">
             <form action="" method="post" id="subCategoryForm" name="subCategoryForm">
                 <div class="card">
-                    <div class="card-body">								
+                    <div class="card-body">
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="mb-3">
@@ -44,24 +44,24 @@ Sub Category Edit
                                             @endforeach
                                         @endif
                                     </select>
-                                    <p></p>	
+                                    <p></p>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="name">Sub Category</label>
                                     <input type="text" name="name" id="name" class="form-control" value="{{ $sub_category->name }}" placeholder="Sub Category Name">
-                                    <p></p>	
+                                    <p></p>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="email">Slug</label>
                                     <input type="text" readonly name="slug" id="slug" value="{{ $sub_category->slug }}" class="form-control" placeholder="Slug">
-                                    <p></p>	
+                                    <p></p>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="email">Status</label>
@@ -70,9 +70,18 @@ Sub Category Edit
                                         <option value="0" {{ $sub_category->status == '0' ? 'selected' : '' }}>Inactive</option>
                                     </select>
                                 </div>
-                            </div>	
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="email">Show On Home</label>
+                                    <select name="show_home" class="form-control" id="status">
+                                        <option value="Yes" {{  $sub_category->show_home == "Yes" ? "selected" : "" }}>Yes</option>
+                                        <option value="No" {{  $sub_category->show_home == "No" ? "selected" : "" }}>No</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                    </div>							
+                    </div>
                 </div>
                 <div class="pb-5 pt-3">
                     <button type="submit" class="btn btn-primary">Update</button>
@@ -109,7 +118,7 @@ Sub Category Edit
     });
 
     $("#subCategoryForm").submit(function(e){
-        
+
         e.preventDefault();
 
         var element = $("#subCategoryForm");
@@ -142,7 +151,7 @@ Sub Category Edit
                     }else{
                         $("#name").removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html('')
                     }
-                    
+
                     if(errors['slug']){
                         $("#slug").addClass('is-invalid').siblings('p').addClass('invalid-feedback').html(errors['slug']);
                     }else{
