@@ -16,4 +16,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/',[FrontendController::class,'index'])->name('frontend.home');
-Route::get('/shop',[ShopController::class,'shop'])->name('front.shop');
+Route::get('/shop/{categorySlug?}/{subCategorySlug?}',[ShopController::class,'shop'])->name('front.shop');

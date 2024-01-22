@@ -36,14 +36,14 @@ Shop
                                             </button>
                                         </h2>
                                         @else
-                                        <a href="" class="nav-item nav-link">{{ $category_item->name ?? ""  }}</a>
+                                        <a href="{{ route('front.shop',$category_item->slug) }}" class="nav-item nav-link {{ ($categorySelected == $category_item->id) ? 'text-primary' : '' }}">{{ $category_item->name ?? ""  }}</a>
                                         @endif
-                                        <div id="collapseOne{{ $key }}" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
+                                        <div id="collapseOne{{ $key }}" class="accordion-collapse collapse {{ ($categorySelected == $category_item->id) ? 'show' : '' }}" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
                                             @if ($category_item->subCategory->isNotEmpty())
                                             <div class="accordion-body">
                                                 <div class="navbar-nav">
                                                     @foreach ($category_item->subCategory as $key=> $sub_cat_item)
-                                                    <a href="" class="nav-item nav-link">{{ $sub_cat_item->name ?? ""  }}</a>
+                                                    <a href="{{ route('front.shop',[$category_item->slug, $sub_cat_item->slug]) }}" class="nav-item nav-link {{ ($subCategorySelected == $sub_cat_item->id) ? 'text-primary' : '' }}">{{ $sub_cat_item->name ?? ""  }}</a>
                                                     @endforeach
                                                 </div>
                                             </div>
@@ -64,8 +64,8 @@ Shop
                             @if ($brands->isNotEmpty())
                                 @foreach ($brands as $key=> $brand_item)
                                     <div class="form-check mb-2">
-                                        <input class="form-check-input" name="brand[]" type="checkbox" value="{{ $brand_item->id }}" id="brand{{ $brand_item->id }}">
-                                        <label class="form-check-label" for="flexCheckDefault">
+                                        <input {{ (in_array($brand_item->id, $brandArray)) ? 'checked' : '' }} class="form-check-input brand-label" name="brand[]" type="checkbox" value="{{ $brand_item->id }}" id="brand{{ $brand_item->id }}">
+                                        <label class="form-check-label" for="brand{{ $brand_item->id }}">
                                             {{ $brand_item->name ?? "" }}
                                         </label>
                                     </div>
@@ -168,3 +168,23 @@ Shop
     </section>
 </main>
 @endsection
+@push('js')
+<script>
+    $('.brand-label').change(function(){
+        apply_filter();
+    });
+    function apply_filter(){
+        var brands = [];
+
+        $('.brand-label').each(function(){
+            if($(this).is(":checked") == true){
+                brands.push($(this).val())
+            }
+        });
+        console.log(brands.toString());
+        var url = '{{ url()->current() }}';
+        window.location.href = url+'&brand='+ brands.toString();
+    }
+
+</script>
+@endpush
