@@ -25,8 +25,6 @@ class ShopController extends Controller
         //     $brandArray = explode(',',$request->get('brand'));
         // }
 
-
-
         if(!empty($brands)){
             $brandArray = $brands;
         }
