@@ -13,14 +13,24 @@ class ShopController extends Controller
 {
     public function shop(Request $request, $categorySlug = null, $subCategorySlug = null){
 
+        dd($request->brand);
+        dd(explode(',',$request->brand));
+        $brands = explode(',',$request->get('brand'));
         $categorySelected = '';
         $subCategorySelected = '';
         $brandArray = [];
         $data = [];
 
-        if(!empty($request->get('brand'))){
-            $brandArray = explode(',',$request->get('brand'));
+        // if(!empty($request->get('brand'))){
+        //     $brandArray = explode(',',$request->get('brand'));
+        // }
+
+
+
+        if(!empty($brands)){
+            $brandArray = $brands;
         }
+        // dd($brandArray);
         $data['categories'] = Category::where('status',1)->with('subCategory')->orderBy('name','asc')->get();
         $data['brands'] = Brand::where('status', 1)->orderBy('name','asc')->get();
 
@@ -34,9 +44,11 @@ class ShopController extends Controller
 
         if(!empty($subCategorySlug)){
             $subCategory = SubCategory::where('slug', $subCategorySlug)->first();
-            $products = $products->where('sub_category_id', $subCategory->id);
+        //   dd($subCategory);
+            $products = $products->where('sub_category_id',$subCategory->id);
             $subCategorySelected = $subCategory->id;
         }
+
 
 
         $products = $products->orderBy('id','desc');

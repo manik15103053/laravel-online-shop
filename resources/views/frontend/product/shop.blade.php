@@ -64,7 +64,7 @@ Shop
                             @if ($brands->isNotEmpty())
                                 @foreach ($brands as $key=> $brand_item)
                                     <div class="form-check mb-2">
-                                        <input {{ (in_array($brand_item->id, $brandArray)) ? 'checked' : '' }} class="form-check-input brand-label" name="brand[]" type="checkbox" value="{{ $brand_item->id }}" id="brand{{ $brand_item->id }}">
+                                        <input  class="form-check-input brand-label" name="brand[]" type="checkbox" value="{{ $brand_item->id }}" id="brand{{ $brand_item->id }}">
                                         <label class="form-check-label" for="brand{{ $brand_item->id }}">
                                             {{ $brand_item->name ?? "" }}
                                         </label>
