@@ -124,6 +124,7 @@ Shop
                             </div>
                         </div>
 
+                        <div class="row" id="filtered-products-container">
                         @if ($products->isNotempty())
                             @foreach ($products as $key=> $product_item)
                                 @php
@@ -158,7 +159,7 @@ Shop
                                 </div>
                             @endforeach
                         @endif
-
+                    </div>
 
 
                     </div>
@@ -170,21 +171,31 @@ Shop
 @endsection
 @push('js')
 <script>
-    $('.brand-label').change(function(){
-        apply_filter();
-    });
-    function apply_filter(){
-        var brands = [];
-
-        $('.brand-label').each(function(){
-            if($(this).is(":checked") == true){
-                brands.push($(this).val())
-            }
+    $(document).ready(function () {
+        $('.brand-label').change(function () {
+            // Call the function to perform the AJAX request
+            filterProducts();
         });
-        console.log(brands.toString());
-        var url = '{{ url()->current() }}';
-        window.location.href = url+'&brand='+ brands.toString();
-    }
 
+        // Function to filter products using AJAX
+        function filterProducts() {
+            // Get selected brand values
+            var selectedBrands = $('.brand-label:checked').map(function() {
+                return this.value;
+            }).get();
+
+            // AJAX request to filter products
+            $.ajax({
+                type: 'GET',
+                url: '{{ route("front.shop") }}',
+                data: { brand: selectedBrands },
+                success: function (data) {
+                    // Replace the entire container with the filtered products
+                    $('#filtered-products-container').html(data);
+                }
+            });
+        }
+    });
 </script>
+
 @endpush

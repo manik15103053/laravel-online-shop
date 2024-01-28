@@ -13,9 +13,10 @@ class ShopController extends Controller
 {
     public function shop(Request $request, $categorySlug = null, $subCategorySlug = null){
 
-        dd($request->brand);
-        dd(explode(',',$request->brand));
-        $brands = explode(',',$request->get('brand'));
+        $selectedBrands = $request->input('brand', []);
+
+        // dd($selectedBrands);
+        // $brands = explode(',',$request->get('brand'));
         $categorySelected = '';
         $subCategorySelected = '';
         $brandArray = [];
@@ -25,9 +26,9 @@ class ShopController extends Controller
         //     $brandArray = explode(',',$request->get('brand'));
         // }
 
-        if(!empty($brands)){
-            $brandArray = $brands;
-        }
+        // if(!empty($brands)){
+        //     $brandArray = $brands;
+        // }
         // dd($brandArray);
         $data['categories'] = Category::where('status',1)->with('subCategory')->orderBy('name','asc')->get();
         $data['brands'] = Brand::where('status', 1)->orderBy('name','asc')->get();
@@ -47,13 +48,28 @@ class ShopController extends Controller
             $subCategorySelected = $subCategory->id;
         }
 
+        if(!empty($selectedBrands)){
+            $products = $products->whereIn('brand_id',$selectedBrands);
+        }
 
+
+        // if ($request->ajax()) {
+        //     // If the request is AJAX, return a partial view with the filtered products
+        //     return view('partials.filtered_products', compact('products'));
+        // }
 
         $products = $products->orderBy('id','desc');
         $data['products'] = $products->get();
         $data['categorySelected'] = $categorySelected;
         $data['subCategorySelected'] = $subCategorySelected;
         $data['brandArray']  = $brandArray;
+
+
+        if ($request->ajax()) {
+            // If the request is AJAX, return a partial view with the filtered products
+            return view('frontend.product.shop',$data);
+        }
+
         return view('frontend.product.shop',$data);
     }
 }
