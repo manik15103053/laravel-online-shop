@@ -124,14 +124,14 @@ Shop
                             </div>
                         </div>
 
-                        <div class="row" id="filtered-products-container">
+                        <div class="row" id="products">
                         @if ($products->isNotempty())
                             @foreach ($products as $key=> $product_item)
                                 @php
                                     $product_image = $product_item->product_image->first()
                                 @endphp
                                 <div class="col-md-4">
-                                    <div class="card product-card">
+                                    <div class="card product-card" id="filtered-products-container">
                                         <div class="product-image position-relative">
                                             @if ($product_image->image)
                                             <a href="" class="product-img"><img class="card-img-top" src="{{ asset('uploads/product/small/'.$product_image->image) }}" alt=""></a>
@@ -173,29 +173,59 @@ Shop
 <script>
     $(document).ready(function () {
         $('.brand-label').change(function () {
-            // Call the function to perform the AJAX request
             filterProducts();
         });
-
-        // Function to filter products using AJAX
+        let category = '{{ $categorySlug }}';
+        let subCategory = '{{ $subCategorySlug }}';
         function filterProducts() {
-            // Get selected brand values
             var selectedBrands = $('.brand-label:checked').map(function() {
                 return this.value;
             }).get();
 
-            // AJAX request to filter products
             $.ajax({
                 type: 'GET',
-                url: '{{ route("front.shop") }}',
-                data: { brand: selectedBrands },
-                success: function (data) {
-                    // Replace the entire container with the filtered products
-                    $('#filtered-products-container').html(data);
+                url: '{{ route('front.shop') }}', // Replace this with the actual route URL
+                data: { 
+                    brand: selectedBrands,
+                    categorySlug: category,
+                    subCategorySlug: subCategory
+                 },
+                success: function (response) {
+                    const products = response.data.products;
+                    console.log(response);
+                    let prod = '';
+                    $.each(products,function(key, item){
+                        prod += `
+                            <div class="col-md-4">
+                                <div class="card product-card" id="filtered-products-container">
+                                    <div class="product-image position-relative">
+                                        <a href="" class="product-img"><img class="card-img-top" src="${item?.product_image[0]?.image ? '/uploads/product/small/' + item?.product_image[0]?.image : '/frontend/images/product-1.jpg'}" alt=""></a>
+                                        <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
+                                        <div class="product-action">
+                                            <a class="btn btn-dark" href="#">
+                                                <i class="fa fa-shopping-cart"></i> Add To Cart
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body text-center mt-3">
+                                        <a class="h6 link" href="product.php">${item.title}</a>
+                                        <div class="price mt-2">
+                                            <span class="h5"><strong>${item.price}</strong></span>
+                                            ${item.compare_price > 0 ? '<span class="h6 text-underline"><del>' + item.compare_price + '</del></span>' : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+                        console.log(item?.product_image[0]?.image);   
+                    })
+                    $('#products').empty();
+                    $('#products').html(prod);
+                    // console.log("Data",products);
                 }
             });
         }
     });
 </script>
+
 
 @endpush

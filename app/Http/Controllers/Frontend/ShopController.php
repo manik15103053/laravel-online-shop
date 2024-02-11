@@ -13,8 +13,14 @@ class ShopController extends Controller
 {
     public function shop(Request $request, $categorySlug = null, $subCategorySlug = null){
 
-        $selectedBrands = $request->input('brand', []);
+        if ($request->ajax()){
+            $categorySlug = $request->input('categorySlug');
+            $subCategorySlug = $request->input('subCategorySlug');
 
+            // dd($request->all());
+        }
+        $selectedBrands = $request->input('brand', []);
+        
         // dd($selectedBrands);
         // $brands = explode(',',$request->get('brand'));
         $categorySelected = '';
@@ -48,7 +54,7 @@ class ShopController extends Controller
             $subCategorySelected = $subCategory->id;
         }
 
-        if(!empty($selectedBrands)){
+        if($selectedBrands){
             $products = $products->whereIn('brand_id',$selectedBrands);
         }
 
@@ -58,16 +64,19 @@ class ShopController extends Controller
         //     return view('partials.filtered_products', compact('products'));
         // }
 
-        $products = $products->orderBy('id','desc');
+        $products = $products->orderBy('id','desc')->with('product_image');
         $data['products'] = $products->get();
         $data['categorySelected'] = $categorySelected;
         $data['subCategorySelected'] = $subCategorySelected;
         $data['brandArray']  = $brandArray;
-
+        $data['categorySlug'] = $categorySlug;
+        $data['subCategorySlug'] = $subCategorySlug;
 
         if ($request->ajax()) {
             // If the request is AJAX, return a partial view with the filtered products
-            return view('frontend.product.shop',$data);
+            return response()->json([
+                'data' => $data
+            ]);
         }
 
         return view('frontend.product.shop',$data);
